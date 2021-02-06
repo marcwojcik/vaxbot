@@ -20,12 +20,14 @@ class HudsonCounty:
         driver.find_element_by_id("email").send_keys(self.username)
         driver.find_element_by_id("password").send_keys(self.password)
         driver.find_element_by_id("password").submit()
-        print(driver.current_url)
         driver.get("https://www.hudsoncovidvax.org/second/appt/22176")
         if not driver.page_source.__contains__("WE ARE NOT ABLE TO SCHEDULE ANY"):
+            driver.close();
             return True
         else:
+            driver.close();
             return False
+
 
 
 class UnionCounty:
@@ -76,6 +78,8 @@ class UnionCounty:
 
                     # now we have location and availability
                     # availability format: "XXX / XXX", split and get fist number
+                    driver.close()
+
                     if int(availability.split()[0]) > 0:
                         print("found - date: {}, location: {}, availability: {}".format(date, location, availability))
                         return True

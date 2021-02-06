@@ -5,3 +5,4 @@ vax_bot:
   tw_secret_access_token: "xxx"
   hudson_username: "jstango@gmail.com"
   hudson_password: ""
+  topic_arn: "arn:aws:sns:us-east-1:936321854814:vaxbot"
