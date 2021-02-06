@@ -1,10 +1,7 @@
-twitter_api_keys:
-  consumer_key: "xxx"
-  consumer_secret: "xxx"
-  access_token: "xxx"
-  secret_access_token: "xxx"
-facebook_api_keys:
-  app_id: "xxx"                 # not needed, for safekeeping
-  app_secret: "xxx"             # not needed, for safekeeping
-  user_acces_token: "xxx"       # not needed, for safekeeping
-  page_access_token: "xxx"      # required
+vax_bot:
+  tw_consumer_key: "xxx"
+  tw_consumer_secret: "xxx"
+  tw_access_token: "xxx"
+  tw_secret_access_token: "xxx"
+  hudson_username: "jstango@gmail.com"
+  hudson_password: ""
