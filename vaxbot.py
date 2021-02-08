@@ -133,6 +133,18 @@ while (True):
         else:
             logging.info('No Vaccines - Shoprite')
 
+        # Bergen County -----------------------------------------------------------------
+        bergen = Counties.BergenCounty()
+        bergen_number_vaccines = bergen.check_vaccines()
+        if bergen_number_vaccines > 0:
+            logging.info("Appointments available Bergen County Website Currently - " + str(bergen_number_vaccines) +
+                         " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
+            publish_message(topic_arn,
+                            "Appointments available Union County Website Currently -" + str(bergen_number_vaccines) +
+                            " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
+        else:
+            logging.info('No Vaccines - Bergen County')
+
 
     except Exception as e:
         logging.exception(str(e))
