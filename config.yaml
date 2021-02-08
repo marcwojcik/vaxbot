@@ -3,6 +3,9 @@ vax_bot:
   tw_consumer_secret: "xxx"
   tw_access_token: "xxx"
   tw_secret_access_token: "xxx"
-  hudson_username: "jstango@gmail.com"
-  hudson_password: ""
   topic_arn: "arn:aws:sns:us-east-1:936321854814:vaxbot"
+  log_file: "vaxbot.log"
+  log_level: "INFO"
+  vax_sleeptime: "60"
+  aws_hudson_secret: "VaxBot_Hudson_Credentials"
+

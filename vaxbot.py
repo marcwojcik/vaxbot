@@ -1,16 +1,30 @@
 import os
 import time
 import datetime
-
 import boto3
-import tweepy
 import yaml
 import logging
+import json
 
 import Counties
 import HealthcareSystems
 
-logger = logging.getLogger(__name__)
+
+def get_secret(name):
+    region_name = "us-east-1"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    get_secret_value_response = client.get_secret_value(SecretId=name)
+    if 'SecretString' in get_secret_value_response:
+        return get_secret_value_response['SecretString']
+    else:
+        return ""
 
 
 def publish_message(topic, message):
@@ -26,11 +40,11 @@ def publish_message(topic, message):
     try:
         sns = boto3.client('sns')
         response = sns.publish(TopicArn=topic, Message=message)
-        logger.info(
+        logging.info(
             "Published message with attributes to topic %s.",
             topic)
     except Exception as e:
-        logger.exception("Couldn't publish message to topic %s.", topic)
+        logging.exception("Couldn't publish message to topic %s.", topic)
         raise
 
 
@@ -42,64 +56,86 @@ with open('config.yaml', 'r') as config_yaml:
             consumer_secret = vax_bot['tw_consumer_secret']
             access_token = vax_bot['tw_access_token']
             secret_access_token = vax_bot['tw_secret_access_token']
-            hudson_username = vax_bot['hudson_username']
-            hudson_password = vax_bot['hudson_password']
             topic_arn = vax_bot['topic_arn']
+            log_file = vax_bot['log_file']
+            log_level = vax_bot['log_level']
+            vax_sleeptime = vax_bot['vax_sleeptime']
+            aws_hudson_secret = vax_bot['aws_hudson_secret']
     except yaml.YAMLError as e:
-        print(e)
+        logging.debug(e)
         exit(0)
     except KeyError as e:
-        print("Error in Config File.")
+        logging.exception("Error in Config File.")
         exit(0)
 
-# set up tweepy credentials
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, secret_access_token)
+# logging.basicConfig(filename=log_file, level=log_level)
+logging.root.handlers = []
+logging.basicConfig(level=log_level, format="%(asctime)s [%(levelname)s] %(message)s",
+                    handlers=[logging.FileHandler(log_file), logging.StreamHandler()])
 
-# Create Twitter API object
-twitter_api = tweepy.API(auth)
-
+print(datetime.datetime.now())
+print("VaxBot Starting - Logging to " + log_file + " - Log Level " + log_level)
 while (True):
     try:
-        print(datetime.datetime.now())
-        # Hudson County --------------------------------------------------------------
-        hudson = Counties.HudsonCounty(hudson_username, hudson_password)
-        if hudson.check_vaccines():
+        # Essex --------------------------------------------------
+        essex = Counties.EssexCounty()
+        essex_number_vaccines = essex.check_vaccines()
+        if essex_number_vaccines > 0:
+            logging.info("Appointments available Essex County Website Currently -" + essex_number_vaccines +
+                         "https://www.essexcovid.org/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available on Hudson County Website https://www.hudsoncovidvax.org/login")
+                            "Appointments available Union County Website "
+                            "https://www.essexcovid.org/vaccine/vaccine_availability")
         else:
-            print('No Vaccines - Hudson County')
+            logging.info('No Vaccines - Essex')
+
+        # Hudson County --------------------------------------------------------------
+        secret = get_secret(aws_hudson_secret)
+        secret_loads = json.loads(secret)
+        hudson = Counties.HudsonCounty(secret_loads["username"], secret_loads["password"])
+        if hudson.check_vaccines():
+            logging.info("Appointments available on Hudson County Website https://www.hudsoncovidvax.org/login")
+            publish_message(topic_arn,
+                            "Appointments available on Hudson County Website "
+                            "https://www.hudsoncovidvax.org/login")
+        else:
+            logging.info('No Vaccines - Hudson County')
         # Union County -----------------------------------------------------------------
         union = Counties.UnionCounty()
-        if union.check_vaccines():
-                publish_message(topic_arn,
-                                "Appointments available Union County Website "
-                                "https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+        union_number_vaccines = union.check_vaccines()
+        if union_number_vaccines > 0:
+            logging.info("Appointments available Union County Website Currently -" + union_number_vaccines +
+                         "https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+            publish_message(topic_arn,
+                            "Appointments available Union County Website "
+                            "https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
         else:
-            print('No Vaccines - Union County')
+            logging.info('No Vaccines - Union County')
         # Hackensack Meridian Health --------------------------------------------------
         hackensack = HealthcareSystems.Hackensack()
         if hackensack.check_vaccines():
-                publish_message(topic_arn,
-                                "Appointments may be available on Hackensack Meridian Health Website "
-                                "https://www.hackensackmeridianhealth.org/covid19/")
+            logging.info("Appointments may be available on Hackensack Meridian Health Website "
+                         "https://www.hackensackmeridianhealth.org/covid19/")
+            publish_message(topic_arn,
+                            "Appointments may be available on Hackensack Meridian Health Website "
+                            "https://www.hackensackmeridianhealth.org/covid19/")
         else:
-            print('No Vaccines - Hackensack Meridian Health')
+            logging.info('No Vaccines - Hackensack Meridian Health')
 
         # Shoprite --------------------------------------------------
         shoprite = HealthcareSystems.Shoprite()
         if shoprite.check_vaccines():
+            logging.info("Appointments may be available at Shoprite "
+                         "http://sr.reportsonline.com/sr/shoprite/Immunizations")
             publish_message(topic_arn,
                             "Appointments may be available at Shoprite "
                             "http://sr.reportsonline.com/sr/shoprite/Immunizations")
         else:
-            print('No Vaccines - Shoprite')
-
+            logging.info('No Vaccines - Shoprite')
 
 
     except Exception as e:
-        print("{} - Exception!!".format(datetime.datetime.now()))
-        print(str(e))
+        logging.exception(str(e))
     finally:
-        time.sleep(60)
-
+        logging.info("Sleeping - " + vax_sleeptime + " seconds")
+        time.sleep(int(vax_sleeptime))

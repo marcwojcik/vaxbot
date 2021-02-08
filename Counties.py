@@ -6,6 +6,36 @@ from bs4 import BeautifulSoup
 from bs4 import NavigableString
 
 
+class EssexCounty:
+
+    def check_vaccines(self):
+        options = Options()
+        options.headless = True
+        driver = webdriver.Chrome(options=options)
+        driver.get("https://www.essexcovid.org/vaccine/vaccine_availability")
+
+        table_element = driver.find_element_by_id('datatable-grouping')
+        table_html = table_element.get_attribute('innerHTML')
+        soup = BeautifulSoup(table_html, 'html.parser')
+        table_rows = soup.find_all("tr", ["odd", "even"])
+
+        # capture date a little globally
+        date = "(No Date Found)"
+        vaccines_count = 0;
+        # walk through each individual row
+        for row in table_rows:
+            for column in row:
+
+                if isinstance(column, NavigableString) or column == "\n":
+                    continue
+
+                if column.text.isnumeric() and (int(column.text)) > 0:
+                    vaccines_count = vaccines_count + int(column.text)
+
+        driver.close()
+        return vaccines_count
+
+
 class HudsonCounty:
 
     def __init__(self, username, password):
@@ -27,7 +57,6 @@ class HudsonCounty:
         else:
             driver.close();
             return False
-
 
 
 class UnionCounty:
@@ -82,6 +111,8 @@ class UnionCounty:
 
                     if int(availability.split()[0]) > 0:
                         print("found - date: {}, location: {}, availability: {}".format(date, location, availability))
-                        return True
+                        return int(availability)
                     else:
-                        return False
+                        return 0
+        else:
+            return 0
