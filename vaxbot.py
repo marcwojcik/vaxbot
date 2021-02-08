@@ -81,11 +81,11 @@ while (True):
         essex = Counties.EssexCounty()
         essex_number_vaccines = essex.check_vaccines()
         if essex_number_vaccines > 0:
-            logging.info("Appointments available Essex County Website Currently -" + essex_number_vaccines +
-                         "https://www.essexcovid.org/vaccine/vaccine_availability")
+            logging.info("Appointments available Essex County Website Currently - " + str(essex_number_vaccines) +
+                         " https://www.essexcovid.org/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available Union County Website "
-                            "https://www.essexcovid.org/vaccine/vaccine_availability")
+                            "Appointments available Essex County Website Currently - " + str(essex_number_vaccines) +
+                            " https://www.essexcovid.org/vaccine/vaccine_availability")
         else:
             logging.info('No Vaccines - Essex')
 
@@ -104,11 +104,11 @@ while (True):
         union = Counties.UnionCounty()
         union_number_vaccines = union.check_vaccines()
         if union_number_vaccines > 0:
-            logging.info("Appointments available Union County Website Currently -" + union_number_vaccines +
-                         "https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+            logging.info("Appointments available Union County Website Currently - " + str(union_number_vaccines) +
+                         " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available Union County Website "
-                            "https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+                            "Appointments available Union County Website Currently -" + str(union_number_vaccines) +
+                            " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
         else:
             logging.info('No Vaccines - Union County')
         # Hackensack Meridian Health --------------------------------------------------
