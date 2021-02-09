@@ -14,16 +14,3 @@ class Hackensack:
         else:
             return False
 
-
-
-class Shoprite:
-
-    def check_vaccines(self):
-        options = Options()
-        options.headless = True
-        driver = webdriver.Chrome(options=options)
-        driver.get("http://sr.reportsonline.com/sr/shoprite/Immunizations")
-        if not driver.page_source.__contains__("There are currently no COVID-19 vaccine appointments available"):
-            return True
-        else:
-            return False

@@ -123,16 +123,15 @@ while (True):
         else:
             logging.info('No Vaccines - Hackensack Meridian Health')
 
-        # Shoprite --------------------------------------------------
-        shoprite = HealthcareSystems.Shoprite()
-        if shoprite.check_vaccines():
-            logging.info("Appointments may be available at Shoprite "
-                         "http://sr.reportsonline.com/sr/shoprite/Immunizations")
+        collier = Counties.CollierCounty()
+        if collier.check_vaccines():
+            logging.info("Appointments may be available at Collier "
+                         "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
             publish_message(topic_arn,
-                            "Appointments may be available at Shoprite "
-                            "http://sr.reportsonline.com/sr/shoprite/Immunizations")
+                            "Appointments may be available at Collier "
+                            "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
         else:
-            logging.info('No Vaccines - Shoprite')
+            logging.info('No Vaccines - Collier')
 
         # Bergen County -----------------------------------------------------------------
         bergen = Counties.BergenCounty()
@@ -147,9 +146,9 @@ while (True):
             logging.info('No Vaccines - Bergen County')
 
 
-    except Exception as e:
+    except (Exception, RuntimeError) as e:
         logging.exception(str(e))
-        publish_message(topic_arn,"EXCEPTION:")
+        publish_message(topic_arn, "Runtime EXCEPTION : " + str(e))
 
 
     finally:

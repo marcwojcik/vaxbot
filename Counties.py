@@ -175,3 +175,16 @@ class BergenCounty:
                         return "0"
         else:
             return "0"
+
+
+class CollierCounty:
+
+    def check_vaccines(self):
+        options = Options()
+        options.headless = True
+        driver = webdriver.Chrome(options=options)
+        driver.get("https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
+        if not driver.page_source.__contains__("Sorry, there are no upcoming events"):
+            return True
+        else:
+            return False
