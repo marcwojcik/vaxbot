@@ -103,11 +103,12 @@ while (True):
         # Union County -----------------------------------------------------------------
         union = Counties.UnionCounty()
         union_number_vaccines = union.check_vaccines()
-        if union_number_vaccines > 0:
-            logging.info("Appointments available Union County Website Currently - " + str(union_number_vaccines) +
+
+        if union_number_vaccines != "0":
+            logging.info("Appointments available Union County Website Currently - " + union_number_vaccines +
                          " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available Union County Website Currently -" + str(union_number_vaccines) +
+                            "Appointments available Union County Website Currently - " + union_number_vaccines +
                             " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
         else:
             logging.info('No Vaccines - Union County')
@@ -136,11 +137,11 @@ while (True):
         # Bergen County -----------------------------------------------------------------
         bergen = Counties.BergenCounty()
         bergen_number_vaccines = bergen.check_vaccines()
-        if bergen_number_vaccines > 0:
-            logging.info("Appointments available Bergen County Website Currently - " + str(bergen_number_vaccines) +
+        if bergen_number_vaccines != "0":
+            logging.info("Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
                          " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available Union County Website Currently -" + str(bergen_number_vaccines) +
+                            "Appointments available Union County Website Currently - " + bergen_number_vaccines +
                             " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
         else:
             logging.info('No Vaccines - Bergen County')
@@ -148,6 +149,9 @@ while (True):
 
     except Exception as e:
         logging.exception(str(e))
+        publish_message(topic_arn,"EXCEPTION:")
+
+
     finally:
         logging.info("Sleeping - " + vax_sleeptime + " seconds")
         time.sleep(int(vax_sleeptime))

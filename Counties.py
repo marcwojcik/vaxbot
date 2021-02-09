@@ -111,11 +111,11 @@ class UnionCounty:
 
                     if int(availability.split()[0]) > 0:
                         print("found - date: {}, location: {}, availability: {}".format(date, location, availability))
-                        return int(availability)
+                        return availability
                     else:
-                        return 0
+                        return "0"
         else:
-            return 0
+            return "0"
 
 
 class BergenCounty:
@@ -170,8 +170,8 @@ class BergenCounty:
 
                     if int(availability.split()[0]) > 0:
                         print("found - date: {}, location: {}, availability: {}".format(date, location, availability))
-                        return int(availability)
+                        return availability
                     else:
-                        return 0
+                        return "0"
         else:
-            return 0
+            return "0"
