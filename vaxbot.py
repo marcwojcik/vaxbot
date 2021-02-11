@@ -140,7 +140,7 @@ while (True):
             logging.info("Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
                          " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
             publish_message(topic_arn,
-                            "Appointments available Union County Website Currently - " + bergen_number_vaccines +
+                            "Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
                             " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
         else:
             logging.info('No Vaccines - Bergen County')
