@@ -100,18 +100,18 @@ while (True):
                             "https://www.hudsoncovidvax.org/login")
         else:
             logging.info('No Vaccines - Hudson County')
-        # Union County -----------------------------------------------------------------
-        union = Counties.UnionCounty()
-        union_number_vaccines = union.check_vaccines()
-
-        if union_number_vaccines != "0":
-            logging.info("Appointments available Union County Website Currently - " + union_number_vaccines +
-                         " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
-            publish_message(topic_arn,
-                            "Appointments available Union County Website Currently - " + union_number_vaccines +
-                            " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
-        else:
-            logging.info('No Vaccines - Union County')
+#      # Union County -----------------------------------------------------------------
+#      union = Counties.UnionCounty()
+#        union_number_vaccines = union.check_vaccines()
+#
+#        if union_number_vaccines != "0":
+#            logging.info("Appointments available Union County Website Currently - " + union_number_vaccines +
+#                         " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+#            publish_message(topic_arn,
+#                            "Appointments available Union County Website Currently - " + union_number_vaccines +
+#                            " https://ucnjvaccine.org/index.php/vaccine/vaccine_availability")
+#        else:
+#            logging.info('No Vaccines - Union County')
         # Hackensack Meridian Health --------------------------------------------------
         hackensack = HealthcareSystems.Hackensack()
         if hackensack.check_vaccines():
@@ -122,16 +122,16 @@ while (True):
                             "https://www.hackensackmeridianhealth.org/covid19/")
         else:
             logging.info('No Vaccines - Hackensack Meridian Health')
-
-        collier = Counties.CollierCounty()
-        if collier.check_vaccines():
-            logging.info("Appointments may be available at Collier "
-                         "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
-            publish_message(topic_arn,
-                            "Appointments may be available at Collier "
-                            "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
-        else:
-            logging.info('No Vaccines - Collier')
+        # Collier County --------------------------------------------------
+#        collier = Counties.CollierCounty()
+#        if collier.check_vaccines():
+#            logging.info("Appointments may be available at Collier "
+#                         "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
+#            publish_message(topic_arn,
+#                            "Appointments may be available at Collier "
+#                            "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
+#        else:
+#            logging.info('No Vaccines - Collier')
 
         # Bergen County -----------------------------------------------------------------
         bergen = Counties.BergenCounty()
