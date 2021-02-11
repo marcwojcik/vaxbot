@@ -122,7 +122,7 @@ while (True):
                             "https://www.hackensackmeridianhealth.org/covid19/")
         else:
             logging.info('No Vaccines - Hackensack Meridian Health')
-        # Collier County --------------------------------------------------
+#        # Collier County --------------------------------------------------
 #        collier = Counties.CollierCounty()
 #        if collier.check_vaccines():
 #            logging.info("Appointments may be available at Collier "
@@ -132,6 +132,18 @@ while (True):
 #                            "https://www.eventbrite.com/o/florida-department-of-health-in-collier-county-32165407705")
 #        else:
 #            logging.info('No Vaccines - Collier')
+
+        # CentraState --------------------------------------------------
+        centrastate = HealthcareSystems.CentraState()
+        if centrastate.check_vaccines():
+            logging.info("Appointments may be available on CentraState Health Website "
+                         "https://centrastatevac.wpengine.com/vaccine-update/")
+            publish_message(topic_arn,
+                            "Appointments may be available on CentraState Health Website "
+                            "https://centrastatevac.wpengine.com/vaccine-update/")
+        else:
+            logging.info('No Vaccines - CentraState Health')
+
 
         # Bergen County -----------------------------------------------------------------
         bergen = Counties.BergenCounty()
