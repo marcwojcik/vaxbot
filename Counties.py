@@ -50,7 +50,7 @@ class HudsonCounty:
         driver.find_element_by_id("email").send_keys(self.username)
         driver.find_element_by_id("password").send_keys(self.password)
         driver.find_element_by_id("password").submit()
-        driver.get("https://www.hudsoncovidvax.org/second/appt/22176")
+        driver.get("https://www.hudsoncovidvax.org/second/appt/38555")
         if not driver.page_source.__contains__("WE ARE NOT ABLE TO SCHEDULE ANY"):
             driver.close();
             return True
