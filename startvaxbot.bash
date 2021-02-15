@@ -1,2 +1,2 @@
-nohup python3 -u /home/ec2-user/projects/vaxbot/vaxbot.py &
-echo $! > /home/ec2-user/projects/vaxbot/save_pid.txt
+nohup python3 -u /home/ec2-user/vaxbot/vaxbot.py &
+echo $! > /home/ec2-user/vaxbot/save_pid.txt
