@@ -145,17 +145,17 @@ while (True):
             logging.info('No Vaccines - CentraState Health')
 
 
-        # Bergen County -----------------------------------------------------------------
-        bergen = Counties.BergenCounty()
-        bergen_number_vaccines = bergen.check_vaccines()
-        if bergen_number_vaccines != "0":
-            logging.info("Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
-                         " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
-            publish_message(topic_arn,
-                            "Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
-                            " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
-        else:
-            logging.info('No Vaccines - Bergen County')
+#        # Bergen County -----------------------------------------------------------------
+#        bergen = Counties.BergenCounty()
+#        bergen_number_vaccines = bergen.check_vaccines()
+#        if bergen_number_vaccines != "0":
+#            logging.info("Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
+#                         " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
+#            publish_message(topic_arn,
+#                            "Appointments available Bergen County Website Currently - " + bergen_number_vaccines +
+#                            " https://www.bergencovidvaccine.com/index.php/vaccine/vaccine_availability")
+#        else:
+#            logging.info('No Vaccines - Bergen County')
 
 
     except (Exception, RuntimeError) as e:
