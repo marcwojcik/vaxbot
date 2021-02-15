@@ -14,3 +14,5 @@ mv chromedriver /usr/bin/chromedriver
 
 curl https://intoli.com/install-google-chrome.sh | bash
 mv /usr/bin/google-chrome-stable /usr/bin/google-chrome
+
+chown -R ec2-user:ec2-user /home/ec2-user/vaxbot
